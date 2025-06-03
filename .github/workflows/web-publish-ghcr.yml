@@ -1,14 +1,12 @@
 name: "Publish ghcr (web)"
 
 on:
-    # Run automatically every Wednesday, at 07:00 UTC.
     schedule:
         - cron: '0 7 * * 3'
-    # Run manually if needed to publish out of schedule.
     workflow_dispatch:
 
 permissions:
-    contents: write  # for pushing the `ghcr/web` branch
+    contents: write
     packages: write
 
 jobs:
@@ -23,8 +21,7 @@ jobs:
               with:
                   dockerfile: web/Dockerfile
                   directory: web
-                  # Resultant package name will be ghcr.io/ente-io/web
-                  image: web
+                  image: ente-web
                   registry: ghcr.io
                   enableBuildKit: true
                   multiPlatform: true
