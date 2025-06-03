@@ -245,7 +245,6 @@ export const FileList: React.FC<FileListProps> = ({
                         ),
                     );
                 }
-                timeStampList.push(getAlbumsFooter());
             } else if (showAppDownloadBanner) {
                 timeStampList.push(getAppDownloadFooter());
             }
@@ -324,7 +323,6 @@ export const FileList: React.FC<FileListProps> = ({
                 return [
                     ...timeStampList,
                     asFullSpanListItem(footer),
-                    getAlbumsFooter(),
                 ];
             } else if (publicCollectionGalleryContext.credentials) {
                 if (publicCollectionGalleryContext.photoListFooter) {
@@ -333,7 +331,6 @@ export const FileList: React.FC<FileListProps> = ({
                         getPhotoListFooter(
                             publicCollectionGalleryContext.photoListFooter,
                         ),
-                        getAlbumsFooter(),
                     ];
                 }
             } else if (showAppDownloadBanner) {
@@ -496,65 +493,6 @@ export const FileList: React.FC<FileListProps> = ({
                     />
                 </Typography>
             </FooterContainer>
-        ),
-    });
-
-    const getAlbumsFooter = (): TimeStampListItem => ({
-        tag: "publicAlbumsFooter",
-        height: publicCollectionGalleryContext.referralCode
-            ? ALBUM_FOOTER_HEIGHT_WITH_REFERRAL
-            : ALBUM_FOOTER_HEIGHT,
-        item: (
-            <AlbumFooterContainer
-                span={columns}
-                hasReferral={!!publicCollectionGalleryContext.referralCode}
-            >
-                {/* Make the entire area tappable, otherwise it is hard to
-                    get at on mobile devices. */}
-                <Box sx={{ width: "100%" }}>
-                    <Link
-                        color="text.base"
-                        sx={{ "&:hover": { color: "inherit" } }}
-                        target="_blank"
-                        href={"https://ente.io"}
-                    >
-                        <Typography variant="small">
-                            <Trans
-                                i18nKey="shared_using"
-                                components={{
-                                    a: (
-                                        <Typography
-                                            variant="small"
-                                            component="span"
-                                            sx={{ color: "accent.main" }}
-                                        />
-                                    ),
-                                }}
-                                values={{ url: "ente.io" }}
-                            />
-                        </Typography>
-                    </Link>
-                    {publicCollectionGalleryContext.referralCode ? (
-                        <FullStretchContainer>
-                            <Typography
-                                sx={{
-                                    marginTop: "12px",
-                                    padding: "8px",
-                                    color: "accent.contrastText",
-                                }}
-                            >
-                                <Trans
-                                    i18nKey={"sharing_referral_code"}
-                                    values={{
-                                        referralCode:
-                                            publicCollectionGalleryContext.referralCode,
-                                    }}
-                                />
-                            </Typography>
-                        </FullStretchContainer>
-                    ) : null}
-                </Box>
-            </AlbumFooterContainer>
         ),
     });
 
@@ -1057,28 +995,6 @@ const FooterContainer = styled(ListItemContainer)`
     margin-top: calc(2rem + 20px);
 `;
 
-const AlbumFooterContainer = styled(ListItemContainer, {
-    shouldForwardProp: (propName) => propName != "hasReferral",
-})<{ hasReferral: boolean }>`
-    margin-top: 48px;
-    margin-bottom: ${({ hasReferral }) => (!hasReferral ? `10px` : "0px")};
-    text-align: center;
-    justify-content: center;
-`;
-
-const FullStretchContainer = styled("div")(
-    ({ theme }) => `
-    margin: 0 -24px;
-    width: calc(100% + 46px);
-    left: -24px;
-    @media (max-width: ${IMAGE_CONTAINER_MAX_WIDTH * MIN_COLUMNS}px) {
-        margin: 0 -4px;
-        width: calc(100% + 6px);
-        left: -4px;
-    }
-    background-color: ${theme.vars.palette.accent.main};
-`,
-);
 
 const NothingContainer = styled(ListItemContainer)`
     text-align: center;
